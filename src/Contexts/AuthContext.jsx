@@ -9,7 +9,6 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const logOut = () => {
-        // document.cookie = `takaSwiftToken=; expires=${new Date(0)}; path=/`;
         Cookies.set('takaSwiftToken', '', { expires: 0, path: '/' });
         setUser(null);
     }
@@ -34,6 +33,8 @@ const AuthProvider = ({ children }) => {
                     console.log(result.message);
                 })
                 .catch(error => console.log(error));
+        }else{
+            setLoading(false)
         }
     }, [])
 

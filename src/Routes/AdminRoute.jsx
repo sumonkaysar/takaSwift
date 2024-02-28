@@ -1,19 +1,9 @@
 import { useContext } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { AuthContext } from "../Contexts/AuthContext";
-import { RiseLoader } from "react-spinners";
 
 const AdminRoute = ({ children }) => {
-  const { user, loading, logOut } = useContext(AuthContext);
-  const location = useLocation();
-
-  if (loading) {
-    return (
-      <div className="flex justify-center">
-        <RiseLoader color="#36d7b7" />
-      </div>
-    );
-  }
+  const { user, logOut } = useContext(AuthContext);
 
   if (user?.email && user?.role === 'Admin') {
     return children;
@@ -21,7 +11,7 @@ const AdminRoute = ({ children }) => {
 
   logOut();
 
-  return <Navigate to="/login" state={{ from: location }} replace />;
+  return <Navigate to="/login" />;
 }
 
 export default AdminRoute;

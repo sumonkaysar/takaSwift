@@ -5,18 +5,17 @@ import { RiseLoader } from "react-spinners";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  const location = useLocation();
 
   if (loading) {
     return (
-      <div className="flex justify-center">
+      <div className="w-full h-screen items-center flex justify-center">
         <RiseLoader color="#36d7b7" />
       </div>
     );
   }
 
-  if (!user?.email) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!user?.email || user?.status === 'Blocked') {
+    return <Navigate to="/login" />;
   }
   return children;
 }

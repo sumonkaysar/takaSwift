@@ -5,21 +5,20 @@ import Cookies from 'js-cookie';
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { server } from "../../links";
 import { AuthContext } from "../../Contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const [loginError, setLoginError] = useState(null);
   const [pinSeen, setPinSeen] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
-  const from = location?.state?.from?.pathname || '/';
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const handleLogin = (data) => {
     setLoginError(null);
     if (isNaN(Number(data.emailOrMobile))) {
       data.email = data.emailOrMobile;
@@ -35,9 +34,15 @@ const Login = () => {
       .then(result => {
         console.log(result.message);
         if (result?.status === 200) {
-          // document.cookie = `takaSwiftToken=${result.token}; expires=${new Date(((new Date()).getTime() + 7 * 86400 * 1000))}; path=/`;
-          Cookies.set('takaSwiftToken', result.token, { expires: 7, path: '/' });
-          setUser(result.user);
+          if (result.user.status !== "Blocked") {
+            Cookies.set('takaSwiftToken', result.token, { expires: 7, path: '/' });
+            setUser(result.user);
+            toast.success("Logged in successfully");
+            navigate(result.user.role === "Agent" ? "/agent" : "/dashboard");
+          } else {
+            toast.error("You are suspended");
+            setLoginError("You are suspended");
+          }
         } else {
           setLoginError(result?.error);
           console.log(result?.error);
@@ -51,7 +56,7 @@ const Login = () => {
       <div className="h-screen w-screen flex justify-center items-center">
         <div className="hero-content">
           <div className="card w-[700px] shadow-md border-[1px] border-[#008CBA]">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleLogin)}>
               <div className="card-body lg:px-7 px-4">
                 <div className="border-b-[1px] border-[#1b2f68] pb-3">
                   <h1 className="lg:text-2xl text-center text-lg font-semibold text-[#008CBA] lg:mt-0 mt-4">Welcome Back to Taka Swift</h1>
@@ -67,13 +72,13 @@ const Login = () => {
                       className="input border-[#3b3b3b] w-full outline-none focus:outline-1"
                     />
                     {
-                      errors.email && <span className="text-red-600 text-sm mt-1">Email or mobile is required</span>}
+                      errors.emailOrMobile && <span className="text-red-600 text-sm mt-1">Email or mobile is required</span>}
                     <div>
-                      <label htmlFor="password" className="label">PIN</label>
+                      <label htmlFor="pin" className="label">PIN</label>
                       <div className="relative">
                         <input
                           {...register("pin", { required: true })}
-                          type={pinSeen ? "text" : "pin"}
+                          type={pinSeen ? "text" : "password"}
                           id="pin"
                           placeholder="PIN"
                           className="input border-[#3b3b3b] w-full outline-none focus:outline-1"

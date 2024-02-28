@@ -1,25 +1,27 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Cookies from 'js-cookie';
-// import successIcon from "../../../assets/Icon/success.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { server } from "../../links";
 import { AuthContext } from "../../Contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const { setUser } = useContext(AuthContext);
   const [signupError, setSignupError] = useState(null);
   const [errorType, setErrorType] = useState({});
   const [pinSeen, setPinSeen] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const handleSignup = (data) => {
     setSignupError(null);
+    data.time = new Date().getTime();
     fetch(`${server}/auth/signup`, {
       method: 'POST',
       headers: {
@@ -32,6 +34,8 @@ const Signup = () => {
         if (result?.userResult?.acknowledged) {
           Cookies.set('takaSwiftToken', result.token, { expires: 7, path: '/' });
           setUser(result.user);
+          toast.success("Account is created successfully");
+          navigate(result.user.role === "Agent" ? "/agent" : "/dashboard");
         } else {
           if (result?.errorType) {
             setErrorType(result?.errorType);
@@ -41,11 +45,12 @@ const Signup = () => {
         }
       }).catch(error => console.log(error));
   };
+
   return (
     <div className="min-h-screen lg:pb-24 pb-11">
       <div className="hero-content flex justify-evenly w-screen  mx-auto">
         <div className="card w-[800px] shadow-md border-[1px] border-[#008CBA] mt-10">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(handleSignup)}>
             <div className="card-body lg:px-7 px-4">
               <div className="">
                 <h1 className="lg:text-2xl text-lg font-semibold text-[#008CBA] border-b-[1px] border-[#ddd] pb-3 text-center">Taka Swift</h1>
@@ -89,7 +94,7 @@ const Signup = () => {
                       type="email"
                       placeholder="Email"
                       className="input border-[#3b3b3b] w-full outline-none focus:outline-1"
-                      onKeyUp={() => setErrorType(prev => ({...prev, email: ""}))}
+                      onKeyUp={() => setErrorType(prev => ({ ...prev, email: "" }))}
                     />
                     {errors.email && (
                       <span className="text-red-600">
@@ -115,7 +120,7 @@ const Signup = () => {
                       type="text"
                       placeholder="Mobile (Ex: 017XXXXXXXX)"
                       className="input border-[#3b3b3b] w-full outline-none focus:outline-1"
-                      onKeyUp={() => setErrorType(prev => ({...prev, mobile: ""}))}
+                      onKeyUp={() => setErrorType(prev => ({ ...prev, mobile: "" }))}
                     />
                     {errors.mobile && (
                       <span className="text-red-600">
@@ -131,11 +136,11 @@ const Signup = () => {
                   <div>
                     <label className="label">NID</label>
                     <input
-                      {...register("nid", {required: true})}
+                      {...register("nid", { required: true })}
                       type="text"
                       placeholder="NID"
                       className="input border-[#3b3b3b] w-full outline-none focus:outline-1"
-                      onKeyUp={() => setErrorType(prev => ({...prev, nid: ""}))}
+                      onKeyUp={() => setErrorType(prev => ({ ...prev, nid: "" }))}
                     />
                     {errors.nid && (
                       <span className="text-red-600">
