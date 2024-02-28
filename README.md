@@ -1,8 +1,23 @@
-# React + Vite
+# Taka Swift
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Takaswift is a web application similar to bKash, allowing users to perform financial transactions conveniently online.
 
-Currently, two official plugins are available:
+## About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Takaswift aims to provide users with a seamless experience for managing their finances online. With features inspired by bKash, users can perform various financial transactions securely and efficiently.
+
+## Features
+
+- Secure user authentication and authorization
+- Fund transfer between users
+- Transaction history tracking
+- And more!
+
+## Demo
+
+You can view a live demo of Takaswift [here](https://takaswift.netlify.app/).
+
+## Codes
+
+- [Client Side Code](https://github.com/sumonkaysar/takaSwift/).
+- [Server Side Code](https://github.com/sumonkaysar/takaSwift-server/).

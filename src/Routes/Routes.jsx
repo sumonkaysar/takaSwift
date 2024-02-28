@@ -15,17 +15,17 @@ import WaitingPage from "../Pages/WaitingPage/WaitingPage";
 import DetailedTransactions from "../Pages/Admin/DetailedTransactions/DetailedTransactions";
 import CashOut from "../Pages/Users/CashOut/CashOut";
 import AdminDashboard from "../Pages/Admin/Dashboard/AdminDashboard";
+import AgentDashboard from "../Pages/Agents/Dashboard/AgentDashboard";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    // errorElement: <ErrorPage />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <Home />,
-      // },
+      {
+        path: "/",
+        element: <Login />,
+      },
       {
         path: "/login",
         element: <Login />,
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/agent",
-        element: <Dashboard />,
+        element: <AgentDashboard />,
       },
       {
         path: "/agent/cash-in",

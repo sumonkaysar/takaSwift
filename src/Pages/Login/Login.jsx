@@ -38,7 +38,18 @@ const Login = () => {
             Cookies.set('takaSwiftToken', result.token, { expires: 7, path: '/' });
             setUser(result.user);
             toast.success("Logged in successfully");
-            navigate(result.user.role === "Agent" ? "/agent" : "/dashboard");
+            console.log(result.user.role);
+            switch (result.user.role) {
+              case "Admin":
+                navigate("/admin");
+                break;
+              case "Agent":
+                navigate("/agent");
+                break;
+              default:
+                navigate("/dashboard");
+                break;
+            }
           } else {
             toast.error("You are suspended");
             setLoginError("You are suspended");
