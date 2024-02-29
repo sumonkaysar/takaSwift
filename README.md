@@ -21,3 +21,8 @@ You can view a live demo of Takaswift [here](https://takaswift.netlify.app/).
 
 - [Client Side Code](https://github.com/sumonkaysar/takaSwift/).
 - [Server Side Code](https://github.com/sumonkaysar/takaSwift-server/).
+
+## Passwords
+
+- Admin: Email: hemon.hasan123@gmail.com,   Password:12345
+- Agent: Email: sumon.kaysar.sk@gmail.com,  Password:12345
